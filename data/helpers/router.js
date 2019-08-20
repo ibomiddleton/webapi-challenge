@@ -68,6 +68,43 @@ router.get('/:id/actions', (req, res) => {
 
 // ACTION MODEL
 
+router.post('/:id', (req, res) => {
+    actionHubs.insert(req.params.id, req.body)
+    .then(hub => {
+      res.status(201).json(hub);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(500).json({
+        message: 'Error',
+      });
+    })
+  });
 
+  router.put('/:id', (req, res) => {
+    actionHubs.update(req.params.id, req.body)
+    .then(hub => {
+      res.status(200).json(hub);
+    })
+    .catch(error => {
+      // log error to server
+      console.log(error);
+      res.status(500).json({
+        message: 'Error updating the hub',
+      });
+    });
+  });
 
+router.delete('/:id', (req, res) => {
+  actionHubs.remove(req.params.id)
+  .then(count => {
+    res.status(200).json({ message: 'The hub has been destroyed' });
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(500).json({
+      message: 'Error removing the hub',
+    });
+  });
+});
 module.exports = router;
